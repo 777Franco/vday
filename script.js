@@ -121,7 +121,7 @@ function renderWordList() {
 function renderStats() {
   foundEl.textContent = `${state.found.size} / ${WORDS.length}`;
   const word = activeWord();
-  if (state.found.size === WORDS.length) {
+  if (state.found.size === WORDS.length && !revealedByGiveUp) {
     hintEl.textContent = "All done!";
     showReveal(true);
   } else if (word) {
@@ -171,7 +171,7 @@ function checkAnswer() {
 
   if (guess === word) {
     state.found.add(word);
-    setStatus("Correct! 🎉", "good");
+    setStatus("Correct!", "good");
     boxesEl.classList.add("win");
 
     setTimeout(() => {
@@ -190,7 +190,7 @@ function checkAnswer() {
     setTimeout(() => {
       clearFilled();
       render();
-    }, 400);
+    }, 900);
   }
 }
 
@@ -254,7 +254,17 @@ let revealedByGiveUp = false;  // track whether they gave up or completed all wo
 
 function giveUp() {
   revealedByGiveUp = true;
-  showReveal(false);
+
+  // Reveal all unfound words in the word list
+  for (const word of WORDS) {
+    state.found.add(word);
+  }
+  render();
+
+  // After a short delay, show the Valentine question
+  setTimeout(() => {
+    showReveal(false);
+  }, 4000);
 }
 
 function showReveal(won) {
