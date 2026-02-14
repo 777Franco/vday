@@ -75,9 +75,6 @@
   <!-- Hearts container for love effect -->
   <div class="heartsContainer" id="heartsContainer"></div>
 
-  <!-- Firebase config (gitignored) -->
-  <script src="firebase-config.js"></script>
-
   <!-- Firebase SDK (CDN) — must load before script.js -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
@@ -85,7 +82,17 @@
     import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
-    const app = initializeApp(FIREBASE_CONFIG);
+    const firebaseConfig = {
+      apiKey: "AIzaSyAL2URyQF7RJFh7LVSCsme1IrlxHsgj3hQ",
+      authDomain: "trippings-47e0d.firebaseapp.com",
+      projectId: "trippings-47e0d",
+      storageBucket: "trippings-47e0d.firebasestorage.app",
+      messagingSenderId: "116611606118",
+      appId: "1:116611606118:web:4214744516b6adda1d2fa7",
+      measurementId: "G-41SKLZ94V8"
+    };
+
+    const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
     const auth = getAuth(app);
