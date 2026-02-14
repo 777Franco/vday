@@ -360,18 +360,24 @@
       measurementId: "G-41SKLZ94V8"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
     try {
-      await signInAnonymously(auth);
-      console.log("message.html: Signed in anonymously");
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      try {
+        await signInAnonymously(auth);
+        console.log("message.html: Signed in anonymously");
+      } catch (e) {
+        console.warn("Anonymous sign-in failed:", e);
+      }
+
+      window.__firebase = { db, doc, updateDoc, serverTimestamp };
     } catch (e) {
-      console.warn("Anonymous sign-in failed:", e);
+      console.error("Firebase init failed:", e);
     }
 
-    window.__firebase = { db, doc, updateDoc, serverTimestamp };
+    // Always fire so the page doesn't hang
     window.__firebaseReady = true;
     window.dispatchEvent(new Event("firebaseReady"));
   </script>

@@ -92,21 +92,27 @@
       measurementId: "G-41SKLZ94V8"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    // Sign in anonymously so Firestore rules (request.auth != null) pass
     try {
-      await signInAnonymously(auth);
-      console.log("Signed in anonymously");
+      const app = initializeApp(firebaseConfig);
+      try { getAnalytics(app); } catch (_) { /* Analytics not enabled */ }
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // Sign in anonymously so Firestore rules (request.auth != null) pass
+      try {
+        await signInAnonymously(auth);
+        console.log("Signed in anonymously");
+      } catch (e) {
+        console.warn("Anonymous sign-in failed:", e);
+      }
+
+      // Expose to global and resolve the ready promise
+      window.__firebase = { db, auth, collection, addDoc, doc, updateDoc, serverTimestamp };
     } catch (e) {
-      console.warn("Anonymous sign-in failed:", e);
+      console.error("Firebase init failed:", e);
     }
 
-    // Expose to global and resolve the ready promise
-    window.__firebase = { db, auth, collection, addDoc, doc, updateDoc, serverTimestamp };
+    // Always fire so the game doesn't hang
     window.__firebaseReady = true;
     window.dispatchEvent(new Event("firebaseReady"));
   </script>
