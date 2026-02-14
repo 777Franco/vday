@@ -321,6 +321,7 @@
       <h2 class="voucherTitle" id="voucherTitle"></h2>
       <img class="voucherImg" id="voucherImg" src="" alt="Voucher" />
       <button class="claimBtn" id="claimBtn">Claim!</button>
+      <p style="font-size:12px;color:var(--muted);margin:0;font-style:italic;">Screenshot the voucher before clicking the Claim button</p>
     </div>
 
     <!-- Final screen (hidden initially) -->
@@ -329,7 +330,7 @@
       <h2 class="finalTitle">All Vouchers Claimed!</h2>
       <p class="finalMsg">
         You've claimed all your special vouchers!<br/>
-        Present them to redeem anytime.😘
+        Present them to redeem anytime.
       </p>
       <div class="bouquetRow">
         <span>🌷</span><span>🌹</span><span>🌸</span><span>🌺</span><span>🌻</span><span>🌼</span>
@@ -512,9 +513,7 @@
     });
 
     claimBtn.addEventListener("click", () => {
-      // Download the current voucher image
       const v = vouchers[currentVoucher];
-      downloadImage(v.img, v.img);
 
       // Save claim to Firestore
       saveVoucherClaim(v.title);
