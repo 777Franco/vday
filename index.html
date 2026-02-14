@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guess the Word</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Nickname entry screen -->
+  <div class="overlay visible" id="nicknameOverlay">
+    <div class="reveal">
+      <p class="revealPhrase">Welcome!!!</p>
+      <p class="nicknameLabel">Enter your nickname:</p>
+      <input type="text" id="nicknameInput" class="nicknameInput" placeholder="Enter your nickname here" maxlength="20" autocomplete="off" />
+      <p class="nicknameError" id="nicknameError"></p>
+      <button type="button" class="btn primary" id="nicknameBtn">Start</button>
+    </div>
+  </div>
+
+  <div class="wrap gameHidden" id="gameWrap">
+    <header>
+      <h1>Guess the Word</h1>
+      <p class="subtitle">Tap the shuffled letters to fill the boxes.</p>
+    </header>
+
+    <div class="scoreboard">
+      <div class="stat">
+        <span class="label">Found</span>
+        <span class="value" id="foundCount">0 / 0</span>
+      </div>
+      <div class="stat">
+        <span class="label">Hint</span>
+        <span class="value" id="currentHint">—</span>
+      </div>
+    </div>
+
+    <main class="game">
+      <!-- Empty boxes where letters land -->
+      <div class="boxes" id="boxes"></div>
+
+      <!-- Status message -->
+      <p class="status" id="status"></p>
+
+      <!-- Shuffled letter tiles -->
+      <div class="tiles" id="tiles"></div>
+
+      <!-- Action buttons -->
+      <div class="actions">
+        <button type="button" id="undoBtn" class="btn secondary">Undo</button>
+        <button type="button" id="clearBtn" class="btn secondary">Clear</button>
+        <button type="button" id="skipBtn" class="btn secondary">Skip</button>
+        <button type="button" id="giveUpBtn" class="btn primary">Give Up</button>
+      </div>
+    </main>
+
+    <aside class="wordPanel">
+      <h2>Words to Find</h2>
+      <ul class="wordList" id="wordList"></ul>
+    </aside>
+  </div>
+
+  <!-- Reveal overlay -->
+  <div class="overlay" id="overlay">
+    <div class="reveal">
+      <p class="revealPhrase" id="revealPhrase"></p>
+      <div class="revealActions" id="revealActions">
+        <button type="button" class="btn yes" id="yesBtn">Yes</button>
+        <button type="button" class="btn no" id="noBtn">No</button>
+      </div>
+      <button type="button" class="btn primary" id="nextBtn" style="display:none">Press Me!</button>
+    </div>
+  </div>
+
+  <!-- Hearts container for love effect -->
+  <div class="heartsContainer" id="heartsContainer"></div>
+
+  <!-- Firebase SDK (CDN) — must load before script.js -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAL2URyQF7RJFh7LVSCsme1IrlxHsgj3hQ",
+      authDomain: "trippings-47e0d.firebaseapp.com",
+      projectId: "trippings-47e0d",
+      storageBucket: "trippings-47e0d.firebasestorage.app",
+      messagingSenderId: "116611606118",
+      appId: "1:116611606118:web:4214744516b6adda1d2fa7",
+      measurementId: "G-41SKLZ94V8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Sign in anonymously so Firestore rules (request.auth != null) pass
+    try {
+      await signInAnonymously(auth);
+      console.log("Signed in anonymously");
+    } catch (e) {
+      console.warn("Anonymous sign-in failed:", e);
+    }
+
+    // Expose to global and resolve the ready promise
+    window.__firebase = { db, auth, collection, addDoc, doc, updateDoc, serverTimestamp };
+    window.__firebaseReady = true;
+    window.dispatchEvent(new Event("firebaseReady"));
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>

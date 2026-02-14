@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Valentine's Day</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100dvh;
+      background:
+        radial-gradient(800px 500px at 30% 30%, rgba(255, 107, 157, 0.25), transparent 60%),
+        radial-gradient(700px 500px at 70% 70%, rgba(255, 60, 127, 0.20), transparent 55%),
+        var(--bg);
+    }
+
+    .message {
+      width: min(520px, calc(100% - 32px));
+      text-align: center;
+      padding: 40px 28px;
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 20px;
+      animation: fadeIn 800ms ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bigHeart {
+      font-size: clamp(60px, 15vw, 100px);
+      line-height: 1;
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15%      { transform: scale(1.15); }
+      30%      { transform: scale(1); }
+      45%      { transform: scale(1.1); }
+      60%      { transform: scale(1); }
+    }
+
+    .msgTitle {
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      line-height: 1.25;
+      background: linear-gradient(135deg, #ff6b9d, #ff3c7f, #ff6bb5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .msgBody {
+      font-size: clamp(15px, 3vw, 18px);
+      line-height: 1.6;
+      color: var(--text);
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .msgFooter {
+      color: var(--muted);
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .backLink {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #ff6b9d, #ff3c7f);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 18px rgba(255, 60, 127, 0.4);
+      transition: transform 150ms, box-shadow 150ms;
+      margin-top: 8px;
+    }
+
+    .backLink:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 24px rgba(255, 60, 127, 0.55);
+    }
+
+    /* === Voucher Overlay === */
+    .voucherOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 350ms ease;
+    }
+
+    .voucherOverlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .voucherCard {
+      text-align: center;
+      padding: 28px 20px;
+      max-width: 400px;
+      width: calc(100% - 32px);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 16px;
+      animation: voucherPop 500ms ease;
+    }
+
+    @keyframes voucherPop {
+      0%   { transform: scale(0.7) rotate(-3deg); opacity: 0; }
+      60%  { transform: scale(1.05) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .voucherTitle {
+      font-size: clamp(20px, 5vw, 28px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff6b9d, #ff3c7f, #ff6bb5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    .voucherCount {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .voucherImg {
+      width: 100%;
+      max-width: 340px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(255, 60, 127, 0.25);
+      justify-self: center;
+    }
+
+    .claimBtn {
+      display: inline-block;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #ff6b9d, #ff3c7f);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 18px rgba(255, 60, 127, 0.4);
+      transition: transform 150ms, box-shadow 150ms;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .claimBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(255, 60, 127, 0.55);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 18px rgba(255, 60, 127, 0.4); }
+      50%      { box-shadow: 0 4px 30px rgba(255, 60, 127, 0.7); }
+    }
+
+    /* === Final screen (bouquet + contact) === */
+    .finalScreen {
+      text-align: center;
+      padding: 32px 24px;
+      max-width: 440px;
+      width: calc(100% - 32px);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 18px;
+      animation: voucherPop 600ms ease;
+    }
+
+    .bouquet {
+      font-size: clamp(70px, 18vw, 120px);
+      line-height: 1;
+      animation: bouquetBounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bouquetBounce {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25%      { transform: scale(1.08) rotate(-3deg); }
+      50%      { transform: scale(1) rotate(0deg); }
+      75%      { transform: scale(1.08) rotate(3deg); }
+    }
+
+    .finalTitle {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff6b9d, #ff3c7f, #ff6bb5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    .finalMsg {
+      font-size: clamp(14px, 3vw, 17px);
+      line-height: 1.6;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .contactCard {
+      background: var(--panel-2);
+      border-radius: 16px;
+      padding: 20px;
+      display: grid;
+      gap: 8px;
+      border: 2px solid rgba(255, 107, 157, 0.2);
+    }
+
+    .contactLabel {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .contactName {
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 900;
+      color: var(--accent, #ff6b9d);
+      margin: 0;
+    }
+
+    .contactInfo {
+      font-size: 14px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .bouquetRow {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: clamp(28px, 7vw, 40px);
+      flex-wrap: wrap;
+    }
+
+    /* Floating hearts on this page too */
+    .heartsContainer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 200;
+      overflow: hidden;
+    }
+
+    .floatingHeart {
+      position: absolute;
+      bottom: -60px;
+      font-size: 28px;
+      animation: floatUp var(--duration) ease-in forwards;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
+      50%  { opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.3) rotate(var(--rot)); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="message">
+    <div class="bigHeart">💖</div>
+    <h1 class="msgTitle">Happy Valentine's Day!</h1>
+    <p class="msgBody">
+      You make every day brighter just by being you.
+      Thank you for being amazing, for your smile, your laugh,
+      and everything in between. I'm so lucky to have you in my life. 💕
+    </p>
+    <p class="msgBody">
+      Here's to us — today, tomorrow, and always. 🥰
+    </p>
+    <p class="msgFooter">— With all my love ❤️</p>
+    <button class="backLink" id="claimVouchersBtn">Claim Your Vouchers</button>
+  </div>
+
+  <!-- Voucher Overlay -->
+  <div class="voucherOverlay" id="voucherOverlay">
+    <!-- Voucher card (filled dynamically) -->
+    <div class="voucherCard" id="voucherCard">
+      <p class="voucherCount" id="voucherCount"></p>
+      <h2 class="voucherTitle" id="voucherTitle"></h2>
+      <img class="voucherImg" id="voucherImg" src="" alt="Voucher" />
+      <button class="claimBtn" id="claimBtn">Claim!</button>
+    </div>
+
+    <!-- Final screen (hidden initially) -->
+    <div class="finalScreen" id="finalScreen" style="display:none">
+      <div class="bouquet">💐</div>
+      <h2 class="finalTitle">All Vouchers Claimed!</h2>
+      <p class="finalMsg">
+        You've claimed all your special vouchers!<br/>
+        Present them to redeem anytime.😘
+      </p>
+      <div class="bouquetRow">
+        <span>🌷</span><span>🌹</span><span>🌸</span><span>🌺</span><span>🌻</span><span>🌼</span>
+      </div>
+      <div class="contactCard">
+        <p class="contactLabel">To redeem it, contact</p>
+        <p class="contactName">Franco Paulo Delos Reyes</p>
+      </div>
+      <p class="finalMsg" style="font-style:italic;color:var(--muted)">Happy Valentine's Day, My Goddess!💕</p>
+    </div>
+  </div>
+
+  <div class="heartsContainer" id="heartsContainer"></div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAL2URyQF7RJFh7LVSCsme1IrlxHsgj3hQ",
+      authDomain: "trippings-47e0d.firebaseapp.com",
+      projectId: "trippings-47e0d",
+      storageBucket: "trippings-47e0d.firebasestorage.app",
+      messagingSenderId: "116611606118",
+      appId: "1:116611606118:web:4214744516b6adda1d2fa7",
+      measurementId: "G-41SKLZ94V8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    try {
+      await signInAnonymously(auth);
+      console.log("message.html: Signed in anonymously");
+    } catch (e) {
+      console.warn("Anonymous sign-in failed:", e);
+    }
+
+    window.__firebase = { db, doc, updateDoc, serverTimestamp };
+    window.__firebaseReady = true;
+    window.dispatchEvent(new Event("firebaseReady"));
+  </script>
+
+  <script>
+    const HEART_EMOJIS = ["💕", "💖", "💗", "💓", "❤️", "🩷", "💘", "💝", "🥰"];
+    const container = document.getElementById("heartsContainer");
+
+    function spawnHeart() {
+      const heart = document.createElement("div");
+      heart.className = "floatingHeart";
+      heart.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+      heart.style.left = Math.random() * 100 + "%";
+      heart.style.setProperty("--duration", (4 + Math.random() * 4) + "s");
+      heart.style.setProperty("--rot", (Math.random() * 60 - 30) + "deg");
+      heart.style.fontSize = (18 + Math.random() * 22) + "px";
+      heart.addEventListener("animationend", () => heart.remove());
+      container.appendChild(heart);
+    }
+
+    // Continuous gentle heart rain
+    setInterval(spawnHeart, 400);
+    // Initial burst
+    for (let i = 0; i < 12; i++) setTimeout(spawnHeart, i * 100);
+
+    // Background music — start as soon as the page loads
+    const bgMusic = new Audio("panunumpa.mp3");
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+    bgMusic.play().catch(() => {
+      // Browsers block autoplay without interaction — play on first click/tap
+      document.addEventListener("click", () => {
+        bgMusic.play().catch(() => {});
+      }, { once: true });
+    });
+
+    /* ===== Voucher System ===== */
+    const vouchers = [
+      { title: "Voucher #1", img: "tixs1.png" },
+      { title: "Voucher #2", img: "tixs2.png" },
+      { title: "Voucher #3", img: "tixs3.png" },
+    ];
+
+    let currentVoucher = 0;
+
+    // Get player doc ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerDocId = urlParams.get("pid");
+
+    async function waitForFirebase() {
+      if (window.__firebaseReady) return window.__firebase;
+      return new Promise((resolve) => {
+        window.addEventListener("firebaseReady", () => resolve(window.__firebase), { once: true });
+      });
+    }
+
+    // Mark that the user opened the message page
+    async function saveOpenedMessage() {
+      if (!playerDocId) { console.warn("No player doc ID"); return; }
+      try {
+        const fb = await waitForFirebase();
+        await fb.updateDoc(fb.doc(fb.db, "players", playerDocId), {
+          openedMessage: true,
+          openedMessageAt: fb.serverTimestamp(),
+        });
+        console.log("Marked: user opened message page");
+      } catch (e) {
+        console.error("Failed to mark message opened:", e.code, e.message);
+      }
+    }
+
+    // Run immediately on page load
+    saveOpenedMessage();
+
+    async function saveVoucherClaim(voucherTitle) {
+      if (!playerDocId) { console.warn("No player doc ID"); return; }
+      try {
+        const fb = await waitForFirebase();
+        const claimed = vouchers.slice(0, currentVoucher + 1).map(v => v.title);
+        await fb.updateDoc(fb.doc(fb.db, "players", playerDocId), {
+          vouchersClaimed: claimed,
+          lastClaimedAt: fb.serverTimestamp(),
+        });
+        console.log("Voucher claim saved:", voucherTitle);
+      } catch (e) {
+        console.error("Voucher claim save failed:", e.code, e.message);
+      }
+    }
+
+    const voucherOverlay = document.getElementById("voucherOverlay");
+    const voucherCard    = document.getElementById("voucherCard");
+    const voucherTitle   = document.getElementById("voucherTitle");
+    const voucherImg     = document.getElementById("voucherImg");
+    const voucherCount   = document.getElementById("voucherCount");
+    const claimBtn       = document.getElementById("claimBtn");
+    const finalScreen    = document.getElementById("finalScreen");
+
+    function downloadImage(src, filename) {
+      const a = document.createElement("a");
+      a.href = src;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function showVoucher(index) {
+      const v = vouchers[index];
+      voucherCount.textContent = `${index + 1} of ${vouchers.length}`;
+      voucherTitle.textContent = v.title;
+      voucherImg.src = v.img;
+      voucherImg.alt = v.title;
+
+      if (index === vouchers.length - 1) {
+        claimBtn.textContent = "Claim Here!";
+      } else {
+        claimBtn.textContent = "Claim Here!";
+      }
+
+      // Re-trigger pop animation
+      voucherCard.style.animation = "none";
+      void voucherCard.offsetWidth;
+      voucherCard.style.animation = "voucherPop 500ms ease";
+    }
+
+    document.getElementById("claimVouchersBtn").addEventListener("click", () => {
+      currentVoucher = 0;
+      voucherCard.style.display = "grid";
+      finalScreen.style.display = "none";
+      showVoucher(0);
+      voucherOverlay.classList.add("visible");
+    });
+
+    claimBtn.addEventListener("click", () => {
+      // Download the current voucher image
+      const v = vouchers[currentVoucher];
+      downloadImage(v.img, v.img);
+
+      // Save claim to Firestore
+      saveVoucherClaim(v.title);
+
+      currentVoucher++;
+      if (currentVoucher < vouchers.length) {
+        showVoucher(currentVoucher);
+      } else {
+        // All claimed — show final screen with bouquet
+        voucherCard.style.display = "none";
+        finalScreen.style.display = "grid";
+        finalScreen.style.animation = "none";
+        void finalScreen.offsetWidth;
+        finalScreen.style.animation = "voucherPop 600ms ease";
+
+        // Burst of hearts
+        for (let i = 0; i < 20; i++) setTimeout(spawnHeart, i * 80);
+      }
+    });
+  </script>
+</body>
+</html>
