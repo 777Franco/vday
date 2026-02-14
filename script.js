@@ -279,7 +279,7 @@ function showReveal(won) {
 
 function handleYes() {
   const phraseEl = $("revealPhrase");
-  phraseEl.innerHTML = '<span class="phraseText">Yay!! I love you!!</span> 💕🥰💖';
+  phraseEl.innerHTML = '<span class="phraseText">Yayyy!</span> 🥰🥳🎉';
   $("overlay").classList.add("won");
   $("revealActions").style.display = "none";
   $("nextBtn").style.display = "inline-block";
